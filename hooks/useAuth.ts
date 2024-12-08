@@ -14,7 +14,8 @@ interface LoginCredentials {
 interface SignupCredentials {
   email: string;
   password: string;
-  mobile: string;
+  name: string;
+  role: string;
 }
 
 interface LoginResponse {

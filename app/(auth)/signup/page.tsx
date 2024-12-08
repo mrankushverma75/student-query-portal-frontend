@@ -17,7 +17,7 @@ const Signup: React.FC = () => {
 
   const { mutate, isLoading, isError, error } = useRegisterAuth();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     
     setFormData((prevState) => ({

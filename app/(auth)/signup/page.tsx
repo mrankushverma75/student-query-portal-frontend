@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Input from "@/components/Input";
 import Link from "next/link";
-import { useAuth, useRegisterAuth } from "@/hooks/useAuth";
+import { useRegisterAuth } from "@/hooks/useAuth";
 import Button from "@/components/Button";
 import { toast } from "react-toastify";
 
@@ -11,13 +11,15 @@ const Signup: React.FC = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    mobile: ""
+    name: "",
+    role: "",
   });
 
   const { mutate, isLoading, isError, error } = useRegisterAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    
     setFormData((prevState) => ({
       ...prevState,
       [name]: value,
@@ -26,8 +28,8 @@ const Signup: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!formData.email || !formData.password || !formData.mobile) {
+
+    if (!formData.email || !formData.password || !formData.name) {
       toast.error("Please fill all fields!");
 
       return;
@@ -41,6 +43,24 @@ const Signup: React.FC = () => {
       <div className="w-full max-w-md py-8 px-4 sm:px-8 bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-bold text-center text-gray-800">Signup</h2>
         <form onSubmit={handleSubmit} className="mt-6">
+          {/* Name Field */}
+          <div className="mb-4">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-600"
+            >
+              Name
+            </label>
+            <Input
+              placeholder="Enter your full name"
+              type="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              maxWidth="w-full"
+            />
+          </div>
+
           {/* Email Field */}
           <div className="mb-4">
             <label
@@ -54,24 +74,6 @@ const Signup: React.FC = () => {
               type="email"
               name="email"
               value={formData.email}
-              onChange={handleChange}
-              maxWidth="w-full"
-            />
-          </div>
-
-          {/* Mobile Field */}
-          <div className="mb-4">
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-600"
-            >
-              Mobile
-            </label>
-            <Input
-              placeholder="Enter your mobile number"
-              type="mobile"
-              name="mobile"
-              value={formData.mobile}
               onChange={handleChange}
               maxWidth="w-full"
             />
@@ -94,6 +96,25 @@ const Signup: React.FC = () => {
               maxWidth="w-full"
             />
           </div>
+
+          {/* Role Field */}
+          <div className="mb-4">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-600"
+            >
+              Role
+            </label>
+            <select
+              name="role"
+              onChange={handleChange}
+              className="w-full border border-gray-300 h-12 rounded"
+            >
+              <option value="Student">Student</option>
+              <option value="Resolver">Resolver</option>
+            </select>
+          </div>
+
           {/* Submit Button */}
           <Button
             onClick={handleSubmit}

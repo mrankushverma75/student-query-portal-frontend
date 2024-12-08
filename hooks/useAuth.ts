@@ -22,14 +22,14 @@ interface LoginResponse {
 }
 
 const login = async (credentials: LoginCredentials): Promise<LoginResponse> => {
-  const response = await axiosClient.post("/auth/login", credentials);
+  const response = await axiosClient.post("/api/user/login", credentials);
   return response.data;
 };
 
 const signup = async (
   credentials: SignupCredentials
 ): Promise<LoginResponse> => {
-  const response = await axiosClient.post("/auth/signup", credentials);
+  const response = await axiosClient.post("/api/user/signup", credentials);
   return response.data;
 };
 

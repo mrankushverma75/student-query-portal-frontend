@@ -12,7 +12,7 @@ const Signup: React.FC = () => {
     email: "",
     password: "",
     name: "",
-    role: "",
+    role: "Student",
   });
 
   const { mutate, isLoading, isError, error } = useRegisterAuth();

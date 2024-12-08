@@ -5,11 +5,32 @@ import "react-toastify/dist/ReactToastify.css";
 import DataList from "@/components/DataList";
 import { useQuery } from "@tanstack/react-query";
 import { fetchQueries } from "@/features/queries/queryService";
+import { useUser } from "@/hooks/useUser";
+import { useParams, useRouter } from 'next/navigation';
+import { useEffect } from "react";
 
 const Page = () => {
   const handleSubmit = () => {
     toast.success("Query submitted!");
   };
+
+  const { resolverId } = useParams();
+  const router = useRouter();
+
+  const {
+    data: user,
+    isLoading: isUserLoading,
+    isError: isUserError,
+  } = useUser();
+  
+
+  useEffect(() => {
+    if (!user || user.id !== resolverId) {
+      router.push("/login");
+    }
+    
+  }, [isUserError, router]);
+
 
   const dataTableHeadings = [
     "Title",
@@ -20,7 +41,7 @@ const Page = () => {
   ];
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["queries", "/api/queries?status=open"],
+    queryKey: ["queries", "/api/queries/assigned"],
     queryFn: fetchQueries,
   });
 
@@ -40,7 +61,7 @@ const Page = () => {
           ) : (
             <DataList
               header={dataTableHeadings}
-              data={data}
+              data={data.result}
               isActionBtn={true}
             />
           )}

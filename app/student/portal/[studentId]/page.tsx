@@ -9,7 +9,7 @@ import DataList from "@/components/DataList";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { fetchQueries, submitQuery } from "@/features/queries/queryService";
 import { useUser } from "@/hooks/useUser";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 interface InputFields {
   title: string | null;
@@ -19,16 +19,18 @@ interface InputFields {
 
 const Page = () => {
   const router = useRouter();
+  const { resolverId } = useParams();
 
   const {
+    id: userId,
     data: user,
     isLoading: isUserLoading,
     isError: isUserError,
   } = useUser();
 
-
+  
   useEffect(() => {
-    if (!user) {
+    if (!user || user.id !== resolverId) {
       router.push("/login");
     }
     
@@ -59,7 +61,7 @@ const Page = () => {
 
     if (input.file) form.append("file", input.file);
 
-    mutation.mutate({ url: "/api/submit/student/query", formData: form });
+    mutation.mutate({ url: "/api/queries", formData: form });
   };
 
   const inputs = [
@@ -92,7 +94,7 @@ const Page = () => {
   };
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["queries", "/api/queries?status=open"],
+    queryKey: ["queries", "/api/queries"],
     queryFn: fetchQueries,
   });
 
@@ -138,7 +140,7 @@ const Page = () => {
           ) : (
             <DataList
               header={dataTableHeadings}
-              data={data}
+              data={data.result}
               isActionBtn={false}
             />
           )}

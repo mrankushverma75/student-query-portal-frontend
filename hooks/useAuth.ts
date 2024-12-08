@@ -5,6 +5,7 @@ import {
 } from "@tanstack/react-query";
 import axiosClient from "@/lib/axiosClient";
 import { useRouter } from "next/navigation";
+import { jwtDecode } from "jwt-decode";
 
 interface LoginCredentials {
   email: string;
@@ -48,7 +49,16 @@ export const useAuth = (): UseMutationResult<
     onSuccess: (data) => {
       localStorage.setItem("token", data.token);
       queryClient.invalidateQueries({ queryKey: ["user"] });
-      router.push("/");
+
+      const user = jwtDecode<{ id: string; role: string }>(data.token);
+      
+      if (user.role == "Resolver") {
+        router.push(`/resolver/portal/${user.id}`);
+      } else if (user.role == "Student") {
+        router.push(`/student/portal/${user.id}`);
+      } else {
+        router.push("/login");
+      }
     },
     onError: (error: any) => {
       console.error("Login error:", error.response?.data || error.message);

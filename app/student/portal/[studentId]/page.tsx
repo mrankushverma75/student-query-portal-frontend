@@ -96,6 +96,8 @@ const Page = () => {
     queryFn: fetchQueries,
   });
 
+  const isSubmitLoading = mutation.status === "pending";
+
   return (
     <div className="w-full p-2">
       <div className="container mx-auto py-10">
@@ -121,8 +123,8 @@ const Page = () => {
           <div className="col-span-3 flex justify-center">
             <Button
               onClick={handleSubmit}
-              name={mutation.isLoading ? "Submitting..." : "Submit Query"}
-              disabled={mutation.isLoading}
+              name={isSubmitLoading ? "Submitting..." : "Submit Query"}
+              disabled={isSubmitLoading}
             />
           </div>
         </div>

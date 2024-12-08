@@ -5,7 +5,7 @@ interface DataListProps {
 }
 
 const DataList: React.FC<DataListProps> = ({ header, data, isActionBtn }) => {
-  const handleChange = (e) => {
+  const handleChange = (e:any) => {
 
   } 
 

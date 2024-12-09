@@ -3,6 +3,7 @@ import { jwtDecode } from "jwt-decode";
 import { isTokenValid } from "@/utils/auth";
 
 interface DecodedToken {
+  id: string,
   email: string;
   name: string;
   role: string;

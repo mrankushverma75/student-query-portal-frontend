@@ -10,6 +10,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { fetchQueries, submitQuery } from "@/features/queries/queryService";
 import { useUser } from "@/hooks/useUser";
 import { useParams, useRouter } from "next/navigation";
+import { useLogout } from "@/hooks/useLogout";
 
 interface InputFields {
   title: string | null;
@@ -19,21 +20,18 @@ interface InputFields {
 
 const Page = () => {
   const router = useRouter();
-  const { resolverId } = useParams();
+  const { studentId } = useParams();
 
   const {
-    id: userId,
     data: user,
     isLoading: isUserLoading,
     isError: isUserError,
   } = useUser();
 
-  
   useEffect(() => {
-    if (!user || user.id !== resolverId) {
+    if (!user || user.id !== studentId) {
       router.push("/login");
     }
-    
   }, [isUserError, router]);
 
   const mutation = useMutation({
@@ -100,9 +98,21 @@ const Page = () => {
 
   const isSubmitLoading = mutation.status === "pending";
 
+  const logout = useLogout();
+
   return (
     <div className="w-full p-2">
       <div className="container mx-auto py-10">
+        <div className="text-right">
+          <span className="me-3">{user?.email}</span>
+          <button
+            onClick={logout}
+            className="px-2 py-1 bg-red-500 text-white rounded"
+          >
+            Sign Out
+          </button>
+        </div>
+
         <h1 className="text-3xl font-bold mb-8 text-center">My Queries</h1>
 
         <h3 className="mb-2 text-lg font-semibold">Create New Query</h3>

@@ -124,7 +124,7 @@ const Signup: React.FC = () => {
           />
           {isError && (
             <p className="text-red-600 text-sm py-2">
-              {(error as Error).message}
+              {(error as any)?.response?.data?.error || "An error occurred"}
             </p>
           )}
         </form>

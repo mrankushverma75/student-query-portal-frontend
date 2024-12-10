@@ -74,11 +74,16 @@ const DataList: React.FC<DataListProps> = ({ header, data, isActionBtn }) => {
             data.map((row, rowIndex) => (
               <tr key={rowIndex}>
                 {header.map((heading, colIndex) => {
-                  const isEditableField = row.status !== "Resolved" && isActionBtn &&
-                    ((heading === "Resolver Note" && !row.resolverNote) || (heading === "Internal Note" && !row.internalNote));
+                  const isEditableField =
+                    row.status !== "Resolved" &&
+                    isActionBtn &&
+                    ((heading === "Resolver Note" && !row.resolverNote) ||
+                      (heading === "Internal Note" && !row.internalNote));
                   const resolvedKey =
                     heading.toLowerCase() === "resolver note"
                       ? "resolverNote"
+                      : heading.toLowerCase() === "internal note"
+                      ? "internalNote"
                       : heading.toLowerCase();
 
                   return (
